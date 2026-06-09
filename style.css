@@ -115,12 +115,22 @@ body {
     border-radius: 16px;
     overflow: hidden;
     box-shadow: 0 4px 20px rgba(92, 75, 62, 0.08);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 30px rgba(92, 75, 62, 0.15);
+    transform: scale(1.05) translateY(-10px);
+    box-shadow: 0 20px 40px rgba(92, 75, 62, 0.2);
+}
+
+.card img,
+.card .photo-placeholder {
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.card:hover img,
+.card:hover .photo-placeholder {
+    transform: scale(1.1);
 }
 
 .photo-placeholder {
