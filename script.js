@@ -21,6 +21,39 @@ document.addEventListener('DOMContentLoaded', () => {
     const wishView = document.getElementById('wish-view');
     const wishText = document.getElementById('wishText');
     const backBtn = document.getElementById('backBtn');
+    const floatingBg = document.getElementById('floatingBg');
+    const emojis = ['❤️', '✨', '🎉', '🎂'];
+    let emojiInterval = null;
+
+    function createFloatingEmoji() {
+        if (!floatingBg) return;
+        const span = document.createElement('span');
+        span.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        span.className = 'floating-emoji';
+        span.style.left = Math.random() * 100 + '%';
+        span.style.fontSize = (Math.random() * 20 + 20) + 'px';
+        const duration = Math.random() * 7 + 8;
+        span.style.animationDuration = duration + 's';
+        floatingBg.appendChild(span);
+
+        setTimeout(() => {
+            if (span.parentNode) span.remove();
+        }, duration * 1000);
+    }
+
+    function startFloatingEmojis() {
+        if (emojiInterval) return;
+        createFloatingEmoji();
+        emojiInterval = setInterval(createFloatingEmoji, 700);
+    }
+
+    function stopFloatingEmojis() {
+        if (emojiInterval) {
+            clearInterval(emojiInterval);
+            emojiInterval = null;
+        }
+        if (floatingBg) floatingBg.innerHTML = '';
+    }
 
     cards.forEach((card, index) => {
         card.addEventListener('click', () => {
@@ -34,11 +67,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
             wishText.classList.add('animate');
             wishView.scrollIntoView({ behavior: 'smooth' });
+            startFloatingEmojis();
         });
     });
 
     if (backBtn && gallery) {
         backBtn.addEventListener('click', () => {
+            stopFloatingEmojis();
             gallery.scrollIntoView({ behavior: 'smooth' });
 
             setTimeout(() => {
