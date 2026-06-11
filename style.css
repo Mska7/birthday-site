@@ -345,9 +345,8 @@ body {
 .secret-folder {
     padding: 40px 20px 20px;
     display: flex;
-    flex-direction: column;
+    justify-content: center;
     align-items: center;
-    gap: 12px;
     color: #1A73E8;
 }
 
@@ -355,14 +354,6 @@ body {
     width: 64px;
     height: 64px;
     opacity: 0.8;
-}
-
-.folder-name {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: #0F2C59;
-    word-break: break-all;
 }
 
 @keyframes pulseSecret {
