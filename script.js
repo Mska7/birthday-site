@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const wishText = document.getElementById('wishText');
     const backBtn = document.getElementById('backBtn');
     const floatingBg = document.getElementById('floatingBg');
-    const emojis = ['❤️', '✨', '🎉', '🎂'];
+    const emojis = ['✨', '🌟', '💙'];
     let emojiInterval = null;
 
     function createFloatingEmoji() {
@@ -80,6 +80,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (wishView) wishView.style.display = 'none';
                 if (wishText) wishText.classList.remove('animate');
             }, 600);
+        });
+    }
+
+    const memeBtn = document.getElementById('memeBtn');
+    const memeSection = document.getElementById('memeSection');
+
+    if (memeBtn && memeSection) {
+        memeBtn.addEventListener('click', () => {
+            memeSection.style.display = 'block';
+            memeSection.scrollIntoView({ behavior: 'smooth' });
         });
     }
 });
