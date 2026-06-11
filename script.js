@@ -17,12 +17,12 @@ document.addEventListener('DOMContentLoaded', () => {
         "Желаю, чтобы в твоих глазах всегда горел огонёк радости, а сердце было полно любви и тепла."
     ];
 
-    const cards = document.querySelectorAll('.card');
+    const galleryCards = document.querySelectorAll('.gallery-grid .card');
     const wishView = document.getElementById('wish-view');
     const wishText = document.getElementById('wishText');
     const backBtn = document.getElementById('backBtn');
     const floatingBg = document.getElementById('floatingBg');
-    const emojis = ['✨', '🌟', '💙'];
+    const emojis = ['❤️', '🎉', '💋', '✨', '🎂'];
     let emojiInterval = null;
 
     function createFloatingEmoji() {
@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (floatingBg) floatingBg.innerHTML = '';
     }
 
-    cards.forEach((card, index) => {
+    galleryCards.forEach((card, index) => {
         card.addEventListener('click', () => {
             if (!wishView || !wishText) return;
 
@@ -90,6 +90,34 @@ document.addEventListener('DOMContentLoaded', () => {
         memeBtn.addEventListener('click', () => {
             memeSection.style.display = 'block';
             memeSection.scrollIntoView({ behavior: 'smooth' });
+        });
+    }
+
+    const secretCard = document.getElementById('secretCard');
+    const modalOverlay = document.getElementById('modalOverlay');
+    const modalClose = document.getElementById('modalClose');
+
+    if (secretCard && modalOverlay) {
+        secretCard.addEventListener('click', () => {
+            modalOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+    }
+
+    if (modalClose && modalOverlay) {
+        modalClose.addEventListener('click', (e) => {
+            e.stopPropagation();
+            modalOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+    }
+
+    if (modalOverlay) {
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) {
+                modalOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
         });
     }
 });
