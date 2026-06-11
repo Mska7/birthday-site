@@ -315,7 +315,7 @@ body {
     border: 2px dashed #1A73E8;
     background-color: #FFFFFF;
     position: relative;
-    overflow: visible;
+    overflow: hidden;
     animation: pulseSecret 2.5s ease-in-out infinite;
 }
 
@@ -343,17 +343,19 @@ body {
 }
 
 .secret-folder {
-    padding: 40px 20px 20px;
+    padding: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
-    color: #1A73E8;
 }
 
-.folder-icon {
-    width: 64px;
-    height: 64px;
-    opacity: 0.8;
+.secret-card .secret-photo {
+    width: 140px;
+    height: 140px;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 16px;
+    display: block;
 }
 
 @keyframes pulseSecret {
@@ -439,10 +441,13 @@ body {
 
 .modal-meme-img {
     width: 100%;
+    max-width: 100%;
+    height: auto;
     max-height: 60vh;
     object-fit: contain;
     border-radius: 16px;
     display: block;
+    outline: none;
 }
 
 .modal-caption {

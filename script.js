@@ -96,27 +96,37 @@ document.addEventListener('DOMContentLoaded', () => {
     const secretCard = document.getElementById('secretCard');
     const modalOverlay = document.getElementById('modalOverlay');
     const modalClose = document.getElementById('modalClose');
+    const modalMemeVideo = document.getElementById('modalMemeVideo');
+
+    function closeModal() {
+        if (modalOverlay) modalOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+        if (modalMemeVideo) modalMemeVideo.pause();
+    }
 
     if (secretCard && modalOverlay) {
         secretCard.addEventListener('click', () => {
             modalOverlay.classList.add('active');
             document.body.style.overflow = 'hidden';
+
+            if (modalMemeVideo) {
+                modalMemeVideo.currentTime = 0;
+                modalMemeVideo.play().catch(() => {});
+            }
         });
     }
 
     if (modalClose && modalOverlay) {
         modalClose.addEventListener('click', (e) => {
             e.stopPropagation();
-            modalOverlay.classList.remove('active');
-            document.body.style.overflow = '';
+            closeModal();
         });
     }
 
     if (modalOverlay) {
         modalOverlay.addEventListener('click', (e) => {
             if (e.target === modalOverlay) {
-                modalOverlay.classList.remove('active');
-                document.body.style.overflow = '';
+                closeModal();
             }
         });
     }

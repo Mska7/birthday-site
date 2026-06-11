@@ -83,16 +83,10 @@
         <h2 class="gallery-title">Важные новости для Тамары Геннадьевны</h2>
         <div class="secret-grid">
             <article class="card secret-card" id="secretCard">
-                <div class="secret-badge">СЕКРЕТНО</div>
                 <div class="secret-folder">
-                    <svg class="folder-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
-                        <circle cx="12" cy="13" r="2"></circle>
-                        <path d="M12 15v4"></path>
-                        <path d="M9 18h6"></path>
-                    </svg>
+                    <img src="IMG_6197.JPG" alt="Важные новости" class="secret-photo">
                 </div>
-                <p class="caption">Засекреченные материалы. Не для публичного доступа.</p>
+                <p class="caption">или твой любимый мем</p>
             </article>
         </div>
     </section>
@@ -100,12 +94,12 @@
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal-content" id="modalContent">
             <button class="modal-close" id="modalClose">&times;</button>
-            <h3 class="modal-title">Мем дня</h3>
+            <h3 class="modal-title">Это был великий забор, и его никто не забыл...</h3>
             <div class="meme-display">
-                <!-- Замени src на путь к своему мему -->
-                <img src="zabor.jpg" alt="Мем про забор Тамары Геннадьевны" class="modal-meme-img" id="modalMemeImg">
+                <video class="modal-meme-img" id="modalMemeVideo" src="zabor_tamary.mp4" autoplay playsinline preload="auto">
+                    Ваш браузер не поддерживает воспроизведение видео.
+                </video>
             </div>
-            <p class="modal-caption">«Это был великий забор, и его никто не забыл...»</p>
         </div>
     </div>
 
