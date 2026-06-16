@@ -498,3 +498,8 @@ body {
     background-color: #2C3E50;
     box-shadow: 0 6px 20px rgba(44, 62, 80, 0.35);
 }
+
+/* Utility class for hiding elements */
+.hidden {
+    display: none !important;
+}

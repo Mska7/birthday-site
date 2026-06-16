@@ -85,6 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const wishText = document.getElementById('wishText');
     const backBtn = document.getElementById('backBtn');
     const floatingBg = document.getElementById('floatingBg');
+    const showSecretBtn = document.getElementById('show-secret-btn');
     const emojis = ['❤️', '🎉', '💋', '✨', '🎂'];
     let emojiInterval = null;
 
@@ -153,6 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
         memeBtn.addEventListener('click', () => {
             memeSection.style.display = 'block';
             memeSection.scrollIntoView({ behavior: 'smooth' });
+            memeBtn.classList.add('hidden');
         });
     }
 
@@ -161,10 +163,33 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalClose = document.getElementById('modalClose');
     const modalMemeVideo = document.getElementById('modalMemeVideo');
 
+    function openModal() {
+        if (modalOverlay) modalOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+
+        // Pause background music while the meme video is playing
+        musicWasPlayingBeforeModal = isMusicPlaying;
+        if (isMusicPlaying) {
+            pauseMusic();
+        }
+
+        if (modalMemeVideo) {
+            modalMemeVideo.currentTime = 0;
+            setTimeout(() => {
+                modalMemeVideo.play().catch(error => {
+                    console.log("Автоплей со звуком заблокирован браузером:", error)
+                    });
+            }, 100);
+        }
+    }
+
     function closeModal() {
         if (modalOverlay) modalOverlay.classList.remove('active');
         document.body.style.overflow = '';
         if (modalMemeVideo) modalMemeVideo.pause();
+
+        // Show the button that opens the secret section again
+        if (showSecretBtn) showSecretBtn.classList.remove('hidden');
 
         // Resume background music if it was playing before the modal opened
         if (musicWasPlayingBeforeModal) {
@@ -174,24 +199,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (secretCard && modalOverlay) {
-        secretCard.addEventListener('click', () => {
-            modalOverlay.classList.add('active');
-            document.body.style.overflow = 'hidden';
+        secretCard.addEventListener('click', openModal);
+    }
 
-            // Pause background music while the meme video is playing
-            musicWasPlayingBeforeModal = isMusicPlaying;
-            if (isMusicPlaying) {
-                pauseMusic();
-            }
-
-            if (modalMemeVideo) {
-                modalMemeVideo.currentTime = 0;
-                setTimeout(() => {
-                    modalMemeVideo.play().catch(error => {
-                        console.log("Автоплей со звуком заблокирован браузером:", error)
-                        });
-                }, 100);
-            }
+    if (showSecretBtn) {
+        showSecretBtn.addEventListener('click', () => {
+            openModal();
+            showSecretBtn.classList.add('hidden');
         });
     }
 
