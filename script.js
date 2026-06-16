@@ -8,6 +8,69 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // --- Background music ---
+    const bgMusic = document.getElementById('bg-music');
+    const musicToggle = document.getElementById('music-toggle');
+    let isMusicPlaying = false;
+    let hasUserInteracted = false;
+    let musicWasPlayingBeforeModal = false;
+
+    function updateMusicToggleIcon() {
+        if (musicToggle) {
+            musicToggle.textContent = isMusicPlaying ? '🔊' : '🔇';
+            musicToggle.classList.toggle('muted', !isMusicPlaying);
+            musicToggle.setAttribute('aria-label', isMusicPlaying ? 'Выключить музыку' : 'Включить музыку');
+        }
+    }
+
+    function playMusic() {
+        if (!bgMusic) return;
+        bgMusic.play().then(() => {
+            isMusicPlaying = true;
+            updateMusicToggleIcon();
+        }).catch(error => {
+            console.log('Автовоспроизведение музыки заблокировано браузером:', error);
+            isMusicPlaying = false;
+            updateMusicToggleIcon();
+        });
+    }
+
+    function pauseMusic() {
+        if (!bgMusic) return;
+        bgMusic.pause();
+        isMusicPlaying = false;
+        updateMusicToggleIcon();
+    }
+
+    function toggleMusic() {
+        if (isMusicPlaying) {
+            pauseMusic();
+        } else {
+            playMusic();
+        }
+    }
+
+    if (musicToggle) {
+        musicToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleMusic();
+        });
+    }
+
+    // Start music after the first user interaction with the page
+    function onFirstUserInteraction() {
+        if (hasUserInteracted) return;
+        hasUserInteracted = true;
+        playMusic();
+        document.removeEventListener('click', onFirstUserInteraction);
+        document.removeEventListener('touchstart', onFirstUserInteraction);
+        document.removeEventListener('keydown', onFirstUserInteraction);
+    }
+
+    document.addEventListener('click', onFirstUserInteraction);
+    document.addEventListener('touchstart', onFirstUserInteraction);
+    document.addEventListener('keydown', onFirstUserInteraction);
+
     const wishes = [
         "Каждый день рядом с тобой — это маленькое чудо. Спасибо, что ты есть, мой самый родной человек.",
         "Твоя улыбка освещает всё вокруг. Пусть в твоей жизни будет столько же света, сколько ты даришь другим.",
@@ -102,12 +165,24 @@ document.addEventListener('DOMContentLoaded', () => {
         if (modalOverlay) modalOverlay.classList.remove('active');
         document.body.style.overflow = '';
         if (modalMemeVideo) modalMemeVideo.pause();
+
+        // Resume background music if it was playing before the modal opened
+        if (musicWasPlayingBeforeModal) {
+            playMusic();
+            musicWasPlayingBeforeModal = false;
+        }
     }
 
     if (secretCard && modalOverlay) {
         secretCard.addEventListener('click', () => {
             modalOverlay.classList.add('active');
             document.body.style.overflow = 'hidden';
+
+            // Pause background music while the meme video is playing
+            musicWasPlayingBeforeModal = isMusicPlaying;
+            if (isMusicPlaying) {
+                pauseMusic();
+            }
 
             if (modalMemeVideo) {
                 modalMemeVideo.currentTime = 0;
