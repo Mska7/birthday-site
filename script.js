@@ -111,7 +111,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (modalMemeVideo) {
                 modalMemeVideo.currentTime = 0;
-                modalMemeVideo.play().catch(() => {});
+                setTimeout(() => {
+                    modalMemeVideo.play().catch(error => {
+                        console.log("Автоплей со звуком заблокирован браузером:", error)
+                        });
+                }, 100);
             }
         });
     }
