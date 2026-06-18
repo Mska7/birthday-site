@@ -83,7 +83,23 @@ body {
     transform: scale(0.98);
 }
 
+#surpriseBtn {
+    transition: all 0.3s ease;
+    max-height: 200px;
+}
+
+#surpriseBtn.collapsing {
+    max-height: 0;
+    height: 0;
+    opacity: 0;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    border: none;
+}
+
 .gallery {
+    display: none;
     width: 100%;
     max-width: 800px;
     padding: 80px 20px;

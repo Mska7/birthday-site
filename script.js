@@ -4,7 +4,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (surpriseBtn && gallery) {
         surpriseBtn.addEventListener('click', () => {
+            gallery.style.display = 'block';
             gallery.scrollIntoView({ behavior: 'smooth' });
+            surpriseBtn.classList.add('collapsing');
+            setTimeout(() => {
+                surpriseBtn.style.display = 'none';
+            }, 300);
         });
     }
 
