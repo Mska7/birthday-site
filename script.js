@@ -96,6 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
 
     const galleryCards = document.querySelectorAll('.gallery-grid .card');
+    const wishModalOverlay = document.getElementById('wishModalOverlay');
     const wishView = document.getElementById('wish-view');
     const wishText = document.getElementById('wishText');
     const backBtn = document.getElementById('backBtn');
@@ -103,7 +104,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const showSecretBtn = document.getElementById('show-secret-btn');
     const emojis = ['❤️', '🎉', '💋', '✨', '🎂'];
     let emojiInterval = null;
-    let galleryScrollY = 0;
 
     function createFloatingEmoji() {
         if (!floatingBg) return;
@@ -137,32 +137,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
     galleryCards.forEach((card, index) => {
         card.addEventListener('click', () => {
-            if (!wishView || !wishText) return;
-
-            // Remember scroll position before opening the card
-            galleryScrollY = window.scrollY;
+            if (!wishText || !wishModalOverlay) return;
 
             wishText.textContent = wishes[index] || '';
             wishText.classList.remove('animate');
-            wishView.style.display = 'flex';
 
             void wishText.offsetWidth;
 
             wishText.classList.add('animate');
-            wishView.scrollIntoView({ behavior: 'smooth' });
+            wishModalOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
             startFloatingEmojis();
         });
     });
 
-    if (backBtn && gallery) {
+    if (backBtn) {
         backBtn.addEventListener('click', () => {
             stopFloatingEmojis();
-
-            if (wishView) wishView.style.display = 'none';
             if (wishText) wishText.classList.remove('animate');
-
-            // Return to the same scroll position as before opening the card
-            window.scrollTo({ top: galleryScrollY, behavior: 'instant' });
+            if (wishModalOverlay) wishModalOverlay.classList.remove('active');
+            document.body.style.overflow = '';
         });
     }
 
