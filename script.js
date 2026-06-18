@@ -2,6 +2,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const surpriseBtn = document.getElementById('surpriseBtn');
     const gallery = document.getElementById('gallery');
 
+    function playGalleryVideos() {
+        const galleryVideos = document.querySelectorAll('.gallery-grid video');
+        galleryVideos.forEach(video => {
+            video.play().catch(error => {
+                console.log('Автовоспроизведение видео в галерее заблокировано браузером:', error);
+            });
+        });
+    }
+
     if (surpriseBtn && gallery) {
         surpriseBtn.addEventListener('click', () => {
             gallery.style.display = 'block';
@@ -10,6 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 surpriseBtn.style.display = 'none';
             }, 300);
+            playGalleryVideos();
         });
     }
 
@@ -93,6 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const showSecretBtn = document.getElementById('show-secret-btn');
     const emojis = ['❤️', '🎉', '💋', '✨', '🎂'];
     let emojiInterval = null;
+    let galleryScrollY = 0;
 
     function createFloatingEmoji() {
         if (!floatingBg) return;
@@ -128,6 +139,9 @@ document.addEventListener('DOMContentLoaded', () => {
         card.addEventListener('click', () => {
             if (!wishView || !wishText) return;
 
+            // Remember scroll position before opening the card
+            galleryScrollY = window.scrollY;
+
             wishText.textContent = wishes[index] || '';
             wishText.classList.remove('animate');
             wishView.style.display = 'flex';
@@ -143,12 +157,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (backBtn && gallery) {
         backBtn.addEventListener('click', () => {
             stopFloatingEmojis();
-            gallery.scrollIntoView({ behavior: 'smooth' });
 
-            setTimeout(() => {
-                if (wishView) wishView.style.display = 'none';
-                if (wishText) wishText.classList.remove('animate');
-            }, 600);
+            if (wishView) wishView.style.display = 'none';
+            if (wishText) wishText.classList.remove('animate');
+
+            // Return to the same scroll position as before opening the card
+            window.scrollTo({ top: galleryScrollY, behavior: 'instant' });
         });
     }
 
