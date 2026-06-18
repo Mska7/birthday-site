@@ -194,11 +194,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (modalMemeVideo) {
             modalMemeVideo.currentTime = 0;
-            setTimeout(() => {
-                modalMemeVideo.play().catch(error => {
-                    console.log("Автоплей со звуком заблокирован браузером:", error)
-                    });
-            }, 100);
+            modalMemeVideo.muted = false;
+            modalMemeVideo.play().catch(error => {
+                console.log("Автовоспроизведение видео со звуком заблокировано браузером:", error)
+            });
         }
     }
 
