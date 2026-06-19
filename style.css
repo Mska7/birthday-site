@@ -17,8 +17,8 @@ body {
 
 body {
     font-family: 'Montserrat', sans-serif;
-    background-color: #E8F4F8;
-    color: #2C3E50;
+    background: radial-gradient(circle at center, #001f3f, #00050a);
+    color: #FFFFFF;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -41,9 +41,10 @@ body {
     font-family: 'Playfair Display', serif;
     font-size: clamp(2.5rem, 8vw, 4.5rem);
     font-weight: 700;
-    color: #0F2C59;
+    color: #FFFFFF;
     line-height: 1.2;
     letter-spacing: -0.02em;
+    text-shadow: 0 2px 16px rgba(0, 0, 0, 0.5);
 }
 
 .greeting {
@@ -54,7 +55,7 @@ body {
     font-size: clamp(1rem, 2.5vw, 1.25rem);
     font-weight: 400;
     line-height: 1.8;
-    color: #5D6D7E;
+    color: #E6E6E6;
     max-width: 600px;
     margin: 0 auto;
 }
@@ -110,8 +111,9 @@ body {
     font-family: 'Playfair Display', serif;
     font-size: clamp(1.8rem, 5vw, 2.5rem);
     font-weight: 600;
-    color: #2C3E50;
+    color: #FFFFFF;
     margin-bottom: 16px;
+    text-shadow: 0 2px 14px rgba(0, 0, 0, 0.5);
 }
 
 .gallery-grid {
@@ -131,7 +133,7 @@ body {
     background-color: #FFFFFF;
     border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0 4px 20px rgba(44, 62, 80, 0.08);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
 }
 
 .gallery-grid .card {
@@ -157,11 +159,11 @@ body {
 .photo-placeholder {
     width: 100%;
     aspect-ratio: 1 / 1;
-    background-color: #E8F4F8;
+    background-color: rgba(255, 255, 255, 0.08);
     display: flex;
     justify-content: center;
     align-items: center;
-    color: #1A73E8;
+    color: #B3E5FC;
     font-size: 0.9rem;
     font-weight: 600;
 }
@@ -230,13 +232,13 @@ body {
 .wish-text {
     font-family: 'Caveat', cursive;
     font-size: clamp(2rem, 5vw, 3.5rem);
-    color: #E6F1FF;
+    color: #FFFFFF;
     line-height: 1.3;
     max-width: 700px;
     opacity: 0;
     position: relative;
     z-index: 1;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    text-shadow: 0 2px 14px rgba(0, 0, 0, 0.4);
 }
 
 .wish-text.animate {
@@ -421,7 +423,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(15, 44, 89, 0.6);
+    background-color: rgba(0, 5, 10, 0.75);
     backdrop-filter: blur(6px);
     -webkit-backdrop-filter: blur(6px);
     justify-content: center;
@@ -542,63 +544,20 @@ body {
     box-shadow: 0 6px 20px rgba(44, 62, 80, 0.35);
 }
 
-/* Utility class for hiding elements */
-.hidden {
-    display: none !important;
-}
-
-/* Confetti burst effect */
-.confetti-container {
+/* Starry sky background layer */
+.stars-bg {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
+    z-index: -1;
     pointer-events: none;
-    z-index: 5;
-    overflow: hidden;
 }
 
-.confetti-particle {
-    position: absolute;
-    pointer-events: none;
-    will-change: transform, opacity;
-    animation-name: confetti-burst, confetti-shimmer;
-    animation-timing-function: ease-out, ease-in-out;
-    animation-fill-mode: forwards, none;
+/* Utility class for hiding elements */
+.hidden {
+    display: none !important;
 }
 
-.confetti-particle.circle {
-    border-radius: 50%;
-}
 
-.confetti-particle.strip {
-    border-radius: 2px;
-}
-
-.confetti-particle.star {
-    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
-}
-
-@keyframes confetti-burst {
-    0% {
-        transform: translate(0, 0) rotate(0deg) scale(1);
-        opacity: 1;
-    }
-    60% {
-        opacity: 1;
-    }
-    100% {
-        transform: translate(var(--tx), var(--ty)) rotate(var(--rot)) scale(0.3);
-        opacity: 0;
-    }
-}
-
-@keyframes confetti-shimmer {
-    0%, 100% {
-        filter: brightness(1) saturate(1);
-    }
-    50% {
-        filter: brightness(1.6) saturate(1.3);
-    }
-}
