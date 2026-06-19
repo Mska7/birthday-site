@@ -11,8 +11,70 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    function createConfetti(button) {
+        if (!button) return;
+
+        const rect = button.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+
+        const container = document.createElement('div');
+        container.className = 'confetti-container';
+        container.setAttribute('aria-hidden', 'true');
+        document.body.appendChild(container);
+
+        const colors = [
+            { main: '#003366', shine: '#1A73E8' }, // navy blue
+            { main: '#46b8da', shine: '#B3E5FC' }, // cyan
+            { main: '#FFD700', shine: '#FFFACD' }  // gold
+        ];
+        const shapes = ['circle', 'strip'];
+        const particleCount = 140;
+
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('span');
+            const shape = shapes[Math.floor(Math.random() * shapes.length)];
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            const size = Math.random() * 14 + 12;
+
+            particle.className = `confetti-particle ${shape}`;
+            if (shape === 'strip') {
+                particle.style.width = `${size * 0.7}px`;
+                particle.style.height = `${size * 2.4}px`;
+            } else {
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+            }
+            particle.style.left = `${centerX}px`;
+            particle.style.top = `${centerY}px`;
+            particle.style.background = `linear-gradient(${Math.random() * 360}deg, ${color.main} 0%, ${color.shine} 40%, ${color.main} 100%)`;
+            particle.style.boxShadow = `0 0 8px ${color.main}99`;
+
+            const angle = -Math.PI / 2 + (Math.random() - 0.5) * Math.PI * 1.7;
+            const velocity = Math.random() * 320 + 180;
+            const tx = Math.cos(angle) * velocity;
+            const ty = Math.sin(angle) * velocity - Math.random() * 100;
+            const rot = Math.random() * 1080 - 540;
+            const duration = Math.random() * 0.5 + 0.9;
+            const delay = Math.random() * 0.1;
+
+            particle.style.setProperty('--tx', `${tx}px`);
+            particle.style.setProperty('--ty', `${ty}px`);
+            particle.style.setProperty('--rot', `${rot}deg`);
+            particle.style.animationDelay = `${delay}s`;
+            particle.style.animationDuration = `${duration}s, 0.35s`;
+
+            container.appendChild(particle);
+        }
+
+        setTimeout(() => {
+            container.remove();
+        }, 1600);
+    }
+
     if (surpriseBtn && gallery) {
         surpriseBtn.addEventListener('click', () => {
+            createConfetti(surpriseBtn);
             gallery.style.display = 'block';
             gallery.scrollIntoView({ behavior: 'smooth' });
             surpriseBtn.classList.add('collapsing');

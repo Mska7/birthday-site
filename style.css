@@ -546,3 +546,59 @@ body {
 .hidden {
     display: none !important;
 }
+
+/* Confetti burst effect */
+.confetti-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 5;
+    overflow: hidden;
+}
+
+.confetti-particle {
+    position: absolute;
+    pointer-events: none;
+    will-change: transform, opacity;
+    animation-name: confetti-burst, confetti-shimmer;
+    animation-timing-function: ease-out, ease-in-out;
+    animation-fill-mode: forwards, none;
+}
+
+.confetti-particle.circle {
+    border-radius: 50%;
+}
+
+.confetti-particle.strip {
+    border-radius: 2px;
+}
+
+.confetti-particle.star {
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+}
+
+@keyframes confetti-burst {
+    0% {
+        transform: translate(0, 0) rotate(0deg) scale(1);
+        opacity: 1;
+    }
+    60% {
+        opacity: 1;
+    }
+    100% {
+        transform: translate(var(--tx), var(--ty)) rotate(var(--rot)) scale(0.3);
+        opacity: 0;
+    }
+}
+
+@keyframes confetti-shimmer {
+    0%, 100% {
+        filter: brightness(1) saturate(1);
+    }
+    50% {
+        filter: brightness(1.6) saturate(1.3);
+    }
+}
