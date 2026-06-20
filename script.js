@@ -41,6 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 surpriseBtn.style.display = 'none';
             }, 300);
             playGalleryVideos();
+            ensureMusicPlaying();
         });
     }
 
@@ -108,6 +109,25 @@ document.addEventListener('DOMContentLoaded', () => {
     let isMusicPlaying = false;
     let hasUserInteracted = false;
     let musicWasPlayingBeforeModal = false;
+    const MUSIC_ENABLED_KEY = 'hb-music-enabled';
+
+    function getMusicEnabled() {
+        try {
+            const value = localStorage.getItem(MUSIC_ENABLED_KEY);
+            // First visit: default to true; otherwise use stored preference
+            return value === null ? true : value === 'true';
+        } catch (e) {
+            return true;
+        }
+    }
+
+    function setMusicEnabled(value) {
+        try {
+            localStorage.setItem(MUSIC_ENABLED_KEY, value ? 'true' : 'false');
+        } catch (e) {
+            // ignore
+        }
+    }
 
     function updateMusicToggleIcon() {
         if (musicToggle) {
@@ -118,8 +138,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function playMusic() {
-        if (!bgMusic) return;
-        bgMusic.play().then(() => {
+        if (!bgMusic) return Promise.resolve();
+        return bgMusic.play().then(() => {
             isMusicPlaying = true;
             updateMusicToggleIcon();
         }).catch(error => {
@@ -137,10 +157,24 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function toggleMusic() {
-        if (isMusicPlaying) {
-            pauseMusic();
-        } else {
+        hasUserInteracted = true;
+        const willPlay = !isMusicPlaying;
+        setMusicEnabled(willPlay);
+        if (willPlay) {
             playMusic();
+        } else {
+            pauseMusic();
+        }
+    }
+
+    // Keep music playing after section transitions / user interactions
+    function ensureMusicPlaying() {
+        if (!bgMusic) return;
+        if (getMusicEnabled() && bgMusic.paused && !musicWasPlayingBeforeModal) {
+            bgMusic.play().then(() => {
+                isMusicPlaying = true;
+                updateMusicToggleIcon();
+            }).catch(() => {});
         }
     }
 
@@ -151,19 +185,27 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Start music after the first user interaction with the page
-    function onFirstUserInteraction() {
-        if (hasUserInteracted) return;
-        hasUserInteracted = true;
-        playMusic();
-        document.removeEventListener('click', onFirstUserInteraction);
-        document.removeEventListener('touchstart', onFirstUserInteraction);
-        document.removeEventListener('keydown', onFirstUserInteraction);
+    // First interaction: start music on any button click or touch
+    function handleFirstInteraction(e) {
+        // React to buttons and action buttons, but ignore the music toggle (it handles itself)
+        const target = e.target.closest('button, .action-button');
+        if (!target || target === musicToggle || target.closest('#music-toggle')) return;
+
+        if (!hasUserInteracted) {
+            hasUserInteracted = true;
+            playMusic().then(() => {
+                setMusicEnabled(true);
+            });
+        } else {
+            ensureMusicPlaying();
+        }
     }
 
-    document.addEventListener('click', onFirstUserInteraction);
-    document.addEventListener('touchstart', onFirstUserInteraction);
-    document.addEventListener('keydown', onFirstUserInteraction);
+    document.body.addEventListener('click', handleFirstInteraction);
+    document.body.addEventListener('touchstart', handleFirstInteraction, { passive: true });
+
+    // Initialize icon state
+    updateMusicToggleIcon();
 
     const wishes = [
         "Каждый день рядом с тобой — это маленькое чудо. Спасибо, что ты есть, мой самый родной человек.",
@@ -227,6 +269,7 @@ document.addEventListener('DOMContentLoaded', () => {
             wishModalOverlay.classList.add('active');
             document.body.style.overflow = 'hidden';
             startFloatingEmojis();
+            ensureMusicPlaying();
         });
     });
 
@@ -236,6 +279,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (wishText) wishText.classList.remove('animate');
             if (wishModalOverlay) wishModalOverlay.classList.remove('active');
             document.body.style.overflow = '';
+            ensureMusicPlaying();
         });
     }
 
@@ -247,6 +291,7 @@ document.addEventListener('DOMContentLoaded', () => {
             memeSection.style.display = 'block';
             memeSection.scrollIntoView({ behavior: 'smooth' });
             memeBtn.classList.add('hidden');
+            ensureMusicPlaying();
         });
     }
 
