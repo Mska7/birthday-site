@@ -267,6 +267,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             wishText.classList.add('animate');
             wishModalOverlay.classList.add('active');
+            document.body.classList.add('modal-open');
             document.body.style.overflow = 'hidden';
             startFloatingEmojis();
             ensureMusicPlaying();
@@ -278,6 +279,7 @@ document.addEventListener('DOMContentLoaded', () => {
             stopFloatingEmojis();
             if (wishText) wishText.classList.remove('animate');
             if (wishModalOverlay) wishModalOverlay.classList.remove('active');
+            document.body.classList.remove('modal-open');
             document.body.style.overflow = '';
             ensureMusicPlaying();
         });
@@ -302,6 +304,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function openModal() {
         if (modalOverlay) modalOverlay.classList.add('active');
+        document.body.classList.add('modal-open');
         document.body.style.overflow = 'hidden';
 
         // Pause background music while the meme video is playing
@@ -321,6 +324,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function closeModal() {
         if (modalOverlay) modalOverlay.classList.remove('active');
+        document.body.classList.remove('modal-open');
         document.body.style.overflow = '';
         if (modalMemeVideo) modalMemeVideo.pause();
 
